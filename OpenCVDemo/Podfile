@@ -1,0 +1,10 @@
+platform :ios, '8.0'
+use_frameworks!
+
+## 网络被墙时，使用下面的
+## pod update --verbose --no-repo-update
+## pod install --verbose --no-repo-update
+
+target 'OpenCVDemo' do
+    pod 'OpenCV'
+end
