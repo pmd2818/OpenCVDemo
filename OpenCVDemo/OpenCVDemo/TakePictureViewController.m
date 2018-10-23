@@ -82,8 +82,6 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    
-//    self.navigationController.navigationBar.hidden = NO;
 }
 
 - (void)customCamera

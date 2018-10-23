@@ -32,11 +32,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"crop";
-//    self.navigationController.navigationBar.hidden = NO;
     
     self.view.backgroundColor = [UIColor blackColor];
     
     [self createUI];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 - (void)createUI
