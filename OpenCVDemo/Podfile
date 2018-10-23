@@ -7,4 +7,5 @@ use_frameworks!
 
 target 'OpenCVDemo' do
     pod 'OpenCV'
+    pod 'FDFullscreenPopGesture'
 end
