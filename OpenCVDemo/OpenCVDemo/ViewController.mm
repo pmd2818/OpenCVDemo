@@ -18,6 +18,9 @@
 #import "UIImage+OpenCV.h"
 
 #import "ViewController.h"
+#import "TakePhotoViewController.h"
+#import "TakePictureViewController.h"
+#import "CropImageViewController.h"
 
 using namespace std;
 using namespace cv;
@@ -44,6 +47,11 @@ using namespace cv;
     UIImage *image = [UIImage imageNamed:@"diaopaizuoxie"];
     
     [self xuanzhuanjietu:image];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 - (void)xuanzhuanjietu:(UIImage *)image
@@ -303,18 +311,23 @@ using namespace cv;
 //拍照
 - (void)shoot:(UIButton *)button
 {
-    // 创建UIImagePickerController实例
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    // 设置代理
-    imagePickerController.delegate = self;
-    // 是否显示裁剪框编辑（默认为NO），等于YES的时候，照片拍摄完成可以进行裁剪
-    imagePickerController.allowsEditing = YES;
-    // 设置照片来源为相机
-    imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-    // 设置进入相机时使用前置或后置摄像头
-    imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-    // 展示选取照片控制器
-    [self presentViewController:imagePickerController animated:YES completion:nil];
+//    // 创建UIImagePickerController实例
+//    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+//    // 设置代理
+//    imagePickerController.delegate = self;
+//    // 是否显示裁剪框编辑（默认为NO），等于YES的时候，照片拍摄完成可以进行裁剪
+//    imagePickerController.allowsEditing = NO;
+//    // 设置照片来源为相机
+//    imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+//    // 设置进入相机时使用前置或后置摄像头
+//    imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+//    // 展示选取照片控制器
+//    [self presentViewController:imagePickerController animated:YES completion:nil];
+    
+    TakePhotoViewController *vc = [[TakePhotoViewController alloc] init];
+//    TakePictureViewController *vc = [[TakePictureViewController alloc] init];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 //相册
@@ -371,21 +384,24 @@ using namespace cv;
     NSLog(@"%@", info);
     UIImage *image = info[UIImagePickerControllerOriginalImage];
     self.leftTopImageView.image = image;
-    //    [self xuanzhuanjietu:image];
+    [self xuanzhuanjietu:image];
     Mat srcImg, canny_output;
-    int thresh = 100;
-    UIImageToMat(image, srcImg);
-    cvtColor(srcImg, srcImg, CV_BGR2GRAY);
-    blur(srcImg, srcImg, cv::Size(3, 3));
-    //    Canny(srcImg, srcImg, thresh, thresh*2, 3);
-    //    Sobel(srcImg, srcImg, CV_8U, 0, 1, 3, 1, 1, BORDER_DEFAULT);
-    Mat erodeStruct = getStructuringElement(MORPH_RECT,cv::Size(5,5));
-    erode(srcImg, srcImg, erodeStruct);
-    self.cropImageView.image = MatToUIImage(srcImg);
+//    int thresh = 100;
+//    UIImageToMat(image, srcImg);
+//    cvtColor(srcImg, srcImg, CV_BGR2GRAY);
+//    blur(srcImg, srcImg, cv::Size(3, 3));
+//    //    Canny(srcImg, srcImg, thresh, thresh*2, 3);
+//    //    Sobel(srcImg, srcImg, CV_8U, 0, 1, 3, 1, 1, BORDER_DEFAULT);
+//    Mat erodeStruct = getStructuringElement(MORPH_RECT,cv::Size(5,5));
+//    erode(srcImg, srcImg, erodeStruct);
+//    self.cropImageView.image = MatToUIImage(srcImg);
     
     [picker dismissViewControllerAnimated:YES completion:^{
         NSLog(@"选照片");
     }];
+    
+//    CropImageViewController *vc = [[CropImageViewController alloc] initWithImage:MatToUIImage(srcImg)];
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)loadImageFinished:(UIImage *)image
