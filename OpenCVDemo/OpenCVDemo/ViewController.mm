@@ -15,8 +15,6 @@
 #import <opencv2/highgui/highgui.hpp>
 #import <opencv2/calib3d/calib3d.hpp>
 
-#import "UIImage+OpenCV.h"
-
 #import "ViewController.h"
 #import "TakePhotoViewController.h"
 #import "TakePictureViewController.h"
@@ -324,8 +322,8 @@ using namespace cv;
 //    // 展示选取照片控制器
 //    [self presentViewController:imagePickerController animated:YES completion:nil];
     
-    TakePhotoViewController *vc = [[TakePhotoViewController alloc] init];
-//    TakePictureViewController *vc = [[TakePictureViewController alloc] init];
+//    TakePhotoViewController *vc = [[TakePhotoViewController alloc] init];
+    TakePictureViewController *vc = [[TakePictureViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nav animated:YES completion:nil];
 }
