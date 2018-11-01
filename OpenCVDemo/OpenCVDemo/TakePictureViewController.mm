@@ -15,6 +15,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import <Photos/Photos.h>
 #import "CropImageViewController.h"
+#import "EditImageViewController.h"
+#import "SaoMiaoViewController.h"
 
 #import "ProgressView.h"
 
@@ -98,11 +100,21 @@ using namespace cv;
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBar.hidden = YES;
+    
+    if(!self.session.running)
+    {
+        [self.session startRunning];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    if(self.session.running)
+    {
+        [self.session stopRunning];
+    }
 }
 
 - (void)customCamera
@@ -281,10 +293,10 @@ using namespace cv;
 - (void)shoot
 {
     //保存照片到相册
-    [self loadImageFinished:self.image];
+//    [self loadImageFinished:self.image];
     
     //跳转到照片预览裁剪页面
-    CropImageViewController *vc = [[CropImageViewController alloc] initWithImage:self.image];
+    SaoMiaoViewController *vc = [[SaoMiaoViewController alloc] initWithImage:self.image];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
