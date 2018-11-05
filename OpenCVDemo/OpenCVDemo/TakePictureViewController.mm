@@ -14,9 +14,7 @@
 #import "TakePictureViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <Photos/Photos.h>
-#import "CropImageViewController.h"
 #import "EditImageViewController.h"
-#import "SaoMiaoViewController.h"
 
 #import "ProgressView.h"
 
@@ -87,17 +85,29 @@ using namespace cv;
     }
 }
 
-//状态栏隐藏
-- (BOOL)prefersStatusBarHidden
+////状态栏隐藏
+//- (BOOL)prefersStatusBarHidden
+//{
+//    [super prefersStatusBarHidden];
+//
+//    return YES; //YES:隐藏；NO:显示
+//}
+
+- (void)setStatusBarAlpha:(CGFloat)alpha
 {
-    [super prefersStatusBarHidden];
+    UIView *statusBar = [[UIApplication sharedApplication] valueForKey:@"statusBar"];
+//    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
     
-    return YES; //YES:隐藏；NO:显示
+    // alpha=0,隐藏；alpha=1,显示
+    statusBar.alpha = alpha;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    //设置导航栏透明
+    [self setStatusBarAlpha:0.0f];
     
     self.navigationController.navigationBar.hidden = YES;
     
@@ -105,6 +115,14 @@ using namespace cv;
     {
         [self.session startRunning];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    //设置导航栏不透明
+    [self setStatusBarAlpha:1.0f];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -205,7 +223,7 @@ using namespace cv;
     //拍照
     self.photoButton = [UIButton new];
     self.photoButton.frame = CGRectMake(KScreenWidth/2.0-30, KScreenHeight-100, 60, 60);
-    [self.photoButton setImage:[UIImage imageNamed:@"takePhoto"] forState:UIControlStateNormal];
+    [self.photoButton setImage:[UIImage imageNamed:@"shoot"] forState:UIControlStateNormal];
     [self.photoButton addTarget:self action:@selector(shoot) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.photoButton];
     
@@ -295,8 +313,10 @@ using namespace cv;
     //保存照片到相册
 //    [self loadImageFinished:self.image];
     
+    UIImage *image = [self fixImageOrientation:self.image];
+    
     //跳转到照片预览裁剪页面
-    SaoMiaoViewController *vc = [[SaoMiaoViewController alloc] initWithImage:self.image];
+    EditImageViewController *vc = [[EditImageViewController alloc] initWithImage:image];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -488,6 +508,85 @@ using namespace cv;
     // -------------------梯度方法-------------------
     
     return gradientValue;
+}
+
+// 修正图片方向
+- (UIImage *)fixImageOrientation:(UIImage *)image
+{
+    // No-op if the orientation is already correct
+    if(image.imageOrientation == UIImageOrientationUp)
+    {
+        return image;
+    }
+    
+    // We need to calculate the proper transformation to make the image upright.
+    // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    
+    switch(image.imageOrientation)
+    {
+        case UIImageOrientationDown:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.width, image.size.height);
+            transform = CGAffineTransformRotate(transform, M_PI);
+            break;
+            
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.width, 0);
+            transform = CGAffineTransformRotate(transform, M_PI_2);
+            break;
+            
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, 0, image.size.height);
+            transform = CGAffineTransformRotate(transform, -M_PI_2);
+            break;
+        default:
+            break;
+    }
+    
+    switch(image.imageOrientation)
+    {
+        case UIImageOrientationUpMirrored:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.width, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.height, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+        default:
+            break;
+    }
+    
+    // Now we draw the underlying CGImage into a new context, applying the transform
+    // calculated above.
+    CGContextRef ctx = CGBitmapContextCreate(NULL, image.size.width, image.size.height, CGImageGetBitsPerComponent(image.CGImage), 0, CGImageGetColorSpace(image.CGImage), CGImageGetBitmapInfo(image.CGImage));
+    CGContextConcatCTM(ctx, transform);
+    
+    switch(image.imageOrientation)
+    {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            // Grr...
+            CGContextDrawImage(ctx, CGRectMake(0,0,image.size.height,image.size.width), image.CGImage);
+            break;
+        default:
+            CGContextDrawImage(ctx, CGRectMake(0,0,image.size.width,image.size.height), image.CGImage);
+            break;
+    }
+    
+    // And now we just create a new UIImage from the drawing context
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    CGContextRelease(ctx);
+    CGImageRelease(cgimg);
+    return img;
 }
 
 /*

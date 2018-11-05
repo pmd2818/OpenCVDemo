@@ -46,8 +46,8 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>获取相册权限</string>
 	<key>UIStatusBarHidden</key>
-	<true/>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 </dict>
 </plist>

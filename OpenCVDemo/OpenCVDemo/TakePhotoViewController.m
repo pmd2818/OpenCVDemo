@@ -9,7 +9,6 @@
 #import "TakePhotoViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <Photos/Photos.h>
-#import "CropImageViewController.h"
 
 #define KScreenWidth  [UIScreen mainScreen].bounds.size.width
 #define KScreenHeight  [UIScreen mainScreen].bounds.size.height
@@ -151,7 +150,7 @@
     
     self.photoButton = [UIButton new];
     self.photoButton.frame = CGRectMake(KScreenWidth/2.0-30, KScreenHeight-100, 60, 60);
-    [self.photoButton setImage:[UIImage imageNamed:@"takePhoto"] forState:UIControlStateNormal];
+    [self.photoButton setImage:[UIImage imageNamed:@"shoot"] forState:UIControlStateNormal];
     [self.photoButton addTarget:self action:@selector(shutterCamera) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.photoButton];
     
@@ -354,10 +353,6 @@
         
         //保存照片到相册
 //        [self loadImageFinished:image];
-        
-        //跳转到照片预览裁剪页面
-        CropImageViewController *vc = [[CropImageViewController alloc] initWithImage:image];
-        [self.navigationController pushViewController:vc animated:YES];
     }];
 }
 
