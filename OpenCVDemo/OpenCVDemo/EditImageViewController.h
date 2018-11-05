@@ -1,8 +1,8 @@
 //
-//  CropImageViewController.h
+//  EditImageViewController.h
 //  OpenCVDemo
 //
-//  Created by boljonggo on 2018/10/18.
+//  Created by Meide Pan on 2018/11/5.
 //  Copyright © 2018 boljonggo. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CropImageViewController : UIViewController
+@interface EditImageViewController : UIViewController
 
 - (instancetype)initWithImage:(UIImage *)image;
 

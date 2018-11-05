@@ -8,16 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		47B105ACDABF2B130B55F0C9 /* Pods_OpenCVDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9319D6916BA1336A8997D85D /* Pods_OpenCVDemo.framework */; };
-		8D13D3A7217EB54A00566E77 /* TakePictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D13D3A6217EB54A00566E77 /* TakePictureViewController.m */; };
+		8D13D3A7217EB54A00566E77 /* TakePictureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D13D3A6217EB54A00566E77 /* TakePictureViewController.mm */; };
+		8D13D3AA217EF4D300566E77 /* ProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D13D3A9217EF4D300566E77 /* ProgressView.m */; };
+		8D1F5FC8218C3AAD004D2E3B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1F5FC7218C3AAD004D2E3B /* MainViewController.m */; };
 		8D742053217D9B4C00AA6691 /* TakePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D742052217D9B4C00AA6691 /* TakePhotoViewController.m */; };
+		8DC1B210218FDEEB00252FA3 /* EditImageViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DC1B20F218FDEEB00252FA3 /* EditImageViewController.mm */; };
 		8DC835A72175F3050009423F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC835A62175F3050009423F /* AppDelegate.m */; };
-		8DC835AA2175F3050009423F /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DC835A92175F3050009423F /* ViewController.mm */; };
 		8DC835AD2175F3050009423F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DC835AB2175F3050009423F /* Main.storyboard */; };
 		8DC835AF2175F3060009423F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DC835AE2175F3060009423F /* Assets.xcassets */; };
 		8DC835B22175F3060009423F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DC835B02175F3060009423F /* LaunchScreen.storyboard */; };
 		8DC835B52175F3060009423F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC835B42175F3060009423F /* main.m */; };
-		8DC835D92175FA050009423F /* UIImage+OpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DC835D82175FA050009423F /* UIImage+OpenCV.mm */; };
-		8DF476BA21785731003A54A7 /* CropImageViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DF476B921785731003A54A7 /* CropImageViewController.mm */; };
+		8DEBFBA0218A87DB00401A6F /* Scanner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBFB9E218A87DB00401A6F /* Scanner.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,14 +41,18 @@
 /* Begin PBXFileReference section */
 		00CB935AEEBB15CA89C845FF /* Pods-OpenCVDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenCVDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenCVDemo/Pods-OpenCVDemo.release.xcconfig"; sourceTree = "<group>"; };
 		8D13D3A5217EB54A00566E77 /* TakePictureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TakePictureViewController.h; sourceTree = "<group>"; };
-		8D13D3A6217EB54A00566E77 /* TakePictureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TakePictureViewController.m; sourceTree = "<group>"; };
+		8D13D3A6217EB54A00566E77 /* TakePictureViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TakePictureViewController.mm; sourceTree = "<group>"; };
+		8D13D3A8217EF4D300566E77 /* ProgressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgressView.h; sourceTree = "<group>"; };
+		8D13D3A9217EF4D300566E77 /* ProgressView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProgressView.m; sourceTree = "<group>"; };
+		8D1F5FC6218C3AAD004D2E3B /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		8D1F5FC7218C3AAD004D2E3B /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		8D742051217D9B4C00AA6691 /* TakePhotoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TakePhotoViewController.h; sourceTree = "<group>"; };
 		8D742052217D9B4C00AA6691 /* TakePhotoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TakePhotoViewController.m; sourceTree = "<group>"; };
+		8DC1B20E218FDEEB00252FA3 /* EditImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditImageViewController.h; sourceTree = "<group>"; };
+		8DC1B20F218FDEEB00252FA3 /* EditImageViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditImageViewController.mm; sourceTree = "<group>"; };
 		8DC835A22175F3050009423F /* OpenCVDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenCVDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DC835A52175F3050009423F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8DC835A62175F3050009423F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		8DC835A82175F3050009423F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		8DC835A92175F3050009423F /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		8DC835AC2175F3050009423F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8DC835AE2175F3060009423F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8DC835B12175F3060009423F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -55,10 +60,8 @@
 		8DC835B42175F3060009423F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8DC835BA2175F3060009423F /* OpenCVDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenCVDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DC835C52175F3060009423F /* OpenCVDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenCVDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8DC835D72175FA050009423F /* UIImage+OpenCV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+OpenCV.h"; sourceTree = "<group>"; };
-		8DC835D82175FA050009423F /* UIImage+OpenCV.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+OpenCV.mm"; sourceTree = "<group>"; };
-		8DF476B821785731003A54A7 /* CropImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CropImageViewController.h; sourceTree = "<group>"; };
-		8DF476B921785731003A54A7 /* CropImageViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CropImageViewController.mm; sourceTree = "<group>"; };
+		8DEBFB9E218A87DB00401A6F /* Scanner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scanner.cpp; sourceTree = "<group>"; };
+		8DEBFB9F218A87DB00401A6F /* Scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
 		8DF476BB21786874003A54A7 /* OpenCVDemo.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVDemo.pch; sourceTree = "<group>"; };
 		9319D6916BA1336A8997D85D /* Pods_OpenCVDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OpenCVDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A76A7E0CB92B1874AD51CB46 /* Pods-OpenCVDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenCVDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenCVDemo/Pods-OpenCVDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -123,22 +126,24 @@
 			children = (
 				8DC835A52175F3050009423F /* AppDelegate.h */,
 				8DC835A62175F3050009423F /* AppDelegate.m */,
-				8DC835A82175F3050009423F /* ViewController.h */,
-				8DC835A92175F3050009423F /* ViewController.mm */,
+				8D1F5FC6218C3AAD004D2E3B /* MainViewController.h */,
+				8D1F5FC7218C3AAD004D2E3B /* MainViewController.m */,
+				8DC1B20E218FDEEB00252FA3 /* EditImageViewController.h */,
+				8DC1B20F218FDEEB00252FA3 /* EditImageViewController.mm */,
 				8D13D3A5217EB54A00566E77 /* TakePictureViewController.h */,
-				8D13D3A6217EB54A00566E77 /* TakePictureViewController.m */,
+				8D13D3A6217EB54A00566E77 /* TakePictureViewController.mm */,
 				8D742051217D9B4C00AA6691 /* TakePhotoViewController.h */,
 				8D742052217D9B4C00AA6691 /* TakePhotoViewController.m */,
-				8DF476B821785731003A54A7 /* CropImageViewController.h */,
-				8DF476B921785731003A54A7 /* CropImageViewController.mm */,
-				8DC835D72175FA050009423F /* UIImage+OpenCV.h */,
-				8DC835D82175FA050009423F /* UIImage+OpenCV.mm */,
+				8D13D3A8217EF4D300566E77 /* ProgressView.h */,
+				8D13D3A9217EF4D300566E77 /* ProgressView.m */,
 				8DF476BB21786874003A54A7 /* OpenCVDemo.pch */,
 				8DC835AE2175F3060009423F /* Assets.xcassets */,
 				8DC835B32175F3060009423F /* Info.plist */,
 				8DC835B42175F3060009423F /* main.m */,
 				8DC835AB2175F3050009423F /* Main.storyboard */,
 				8DC835B02175F3060009423F /* LaunchScreen.storyboard */,
+				8DEBFB9E218A87DB00401A6F /* Scanner.cpp */,
+				8DEBFB9F218A87DB00401A6F /* Scanner.h */,
 			);
 			path = OpenCVDemo;
 			sourceTree = "<group>";
@@ -331,13 +336,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DC835AA2175F3050009423F /* ViewController.mm in Sources */,
+				8D13D3AA217EF4D300566E77 /* ProgressView.m in Sources */,
+				8DC1B210218FDEEB00252FA3 /* EditImageViewController.mm in Sources */,
 				8DC835B52175F3060009423F /* main.m in Sources */,
-				8DC835D92175FA050009423F /* UIImage+OpenCV.mm in Sources */,
+				8DEBFBA0218A87DB00401A6F /* Scanner.cpp in Sources */,
+				8D1F5FC8218C3AAD004D2E3B /* MainViewController.m in Sources */,
 				8DC835A72175F3050009423F /* AppDelegate.m in Sources */,
 				8D742053217D9B4C00AA6691 /* TakePhotoViewController.m in Sources */,
-				8DF476BA21785731003A54A7 /* CropImageViewController.mm in Sources */,
-				8D13D3A7217EB54A00566E77 /* TakePictureViewController.m in Sources */,
+				8D13D3A7217EB54A00566E77 /* TakePictureViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
