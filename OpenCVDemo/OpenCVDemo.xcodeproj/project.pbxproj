@@ -11,8 +11,10 @@
 		8D13D3A7217EB54A00566E77 /* TakePictureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D13D3A6217EB54A00566E77 /* TakePictureViewController.mm */; };
 		8D13D3AA217EF4D300566E77 /* ProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D13D3A9217EF4D300566E77 /* ProgressView.m */; };
 		8D1F5FC8218C3AAD004D2E3B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D1F5FC7218C3AAD004D2E3B /* MainViewController.m */; };
+		8D5888DC2194319700F5DF3A /* ImageUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D5888DB2194319700F5DF3A /* ImageUtil.mm */; };
 		8D742053217D9B4C00AA6691 /* TakePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D742052217D9B4C00AA6691 /* TakePhotoViewController.m */; };
 		8DC1B210218FDEEB00252FA3 /* EditImageViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DC1B20F218FDEEB00252FA3 /* EditImageViewController.mm */; };
+		8DC1B2132190490400252FA3 /* EditImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DC1B2122190490400252FA3 /* EditImageView.mm */; };
 		8DC835A72175F3050009423F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC835A62175F3050009423F /* AppDelegate.m */; };
 		8DC835AD2175F3050009423F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DC835AB2175F3050009423F /* Main.storyboard */; };
 		8DC835AF2175F3060009423F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DC835AE2175F3060009423F /* Assets.xcassets */; };
@@ -46,10 +48,14 @@
 		8D13D3A9217EF4D300566E77 /* ProgressView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProgressView.m; sourceTree = "<group>"; };
 		8D1F5FC6218C3AAD004D2E3B /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		8D1F5FC7218C3AAD004D2E3B /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		8D5888DA2194319700F5DF3A /* ImageUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageUtil.h; sourceTree = "<group>"; };
+		8D5888DB2194319700F5DF3A /* ImageUtil.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtil.mm; sourceTree = "<group>"; };
 		8D742051217D9B4C00AA6691 /* TakePhotoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TakePhotoViewController.h; sourceTree = "<group>"; };
 		8D742052217D9B4C00AA6691 /* TakePhotoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TakePhotoViewController.m; sourceTree = "<group>"; };
 		8DC1B20E218FDEEB00252FA3 /* EditImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditImageViewController.h; sourceTree = "<group>"; };
 		8DC1B20F218FDEEB00252FA3 /* EditImageViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditImageViewController.mm; sourceTree = "<group>"; };
+		8DC1B2112190490400252FA3 /* EditImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditImageView.h; sourceTree = "<group>"; };
+		8DC1B2122190490400252FA3 /* EditImageView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EditImageView.mm; sourceTree = "<group>"; };
 		8DC835A22175F3050009423F /* OpenCVDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenCVDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DC835A52175F3050009423F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8DC835A62175F3050009423F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -130,6 +136,10 @@
 				8D1F5FC7218C3AAD004D2E3B /* MainViewController.m */,
 				8DC1B20E218FDEEB00252FA3 /* EditImageViewController.h */,
 				8DC1B20F218FDEEB00252FA3 /* EditImageViewController.mm */,
+				8D5888DA2194319700F5DF3A /* ImageUtil.h */,
+				8D5888DB2194319700F5DF3A /* ImageUtil.mm */,
+				8DC1B2112190490400252FA3 /* EditImageView.h */,
+				8DC1B2122190490400252FA3 /* EditImageView.mm */,
 				8D13D3A5217EB54A00566E77 /* TakePictureViewController.h */,
 				8D13D3A6217EB54A00566E77 /* TakePictureViewController.mm */,
 				8D742051217D9B4C00AA6691 /* TakePhotoViewController.h */,
@@ -343,7 +353,9 @@
 				8D1F5FC8218C3AAD004D2E3B /* MainViewController.m in Sources */,
 				8DC835A72175F3050009423F /* AppDelegate.m in Sources */,
 				8D742053217D9B4C00AA6691 /* TakePhotoViewController.m in Sources */,
+				8DC1B2132190490400252FA3 /* EditImageView.mm in Sources */,
 				8D13D3A7217EB54A00566E77 /* TakePictureViewController.mm in Sources */,
+				8D5888DC2194319700F5DF3A /* ImageUtil.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

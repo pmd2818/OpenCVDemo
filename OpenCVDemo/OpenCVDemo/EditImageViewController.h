@@ -2,7 +2,7 @@
 //  EditImageViewController.h
 //  OpenCVDemo
 //
-//  Created by Meide Pan on 2018/11/5.
+//  Created by boljonggo on 2018/11/5.
 //  Copyright © 2018 boljonggo. All rights reserved.
 //
 

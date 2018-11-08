@@ -17,12 +17,19 @@
 #import "EditImageViewController.h"
 
 #import "ProgressView.h"
+#import "ImageUtil.h"
 
 using namespace std;
 using namespace cv;
 
 #define KScreenWidth  [UIScreen mainScreen].bounds.size.width
 #define KScreenHeight  [UIScreen mainScreen].bounds.size.height
+
+#define COLOR_WITH_HEX(hexValue) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16)) / 255.0 green:((float)((hexValue & 0xFF00) >> 8)) / 255.0 blue:((float)(hexValue & 0xFF)) / 255.0 alpha:1.0f]
+
+#define STATUSBAT_HEIGHT [[UIApplication sharedApplication] statusBarFrame].size.height
+#define TOPVIEW_HEIGHT ((STATUSBAT_HEIGHT) + 72.0f)
+#define BOTTOMVIEW_HEIGHT 100.0f
 
 /**
  * 抓取视频帧数据流拍照片
@@ -62,6 +69,9 @@ using namespace cv;
 
 //进度条
 @property (nonatomic, strong) ProgressView *progressView;
+
+//清晰度值
+@property (nonatomic, strong) UILabel *clarityValueLabel;
 
 @property (nonatomic, strong) UIImage *image;
 
@@ -106,8 +116,8 @@ using namespace cv;
 {
     [super viewWillAppear:animated];
     
-    //设置导航栏透明
-    [self setStatusBarAlpha:0.0f];
+    //设置状态栏透明
+//    [self setStatusBarAlpha:0.0f];
     
     self.navigationController.navigationBar.hidden = YES;
     
@@ -121,8 +131,8 @@ using namespace cv;
 {
     [super viewWillDisappear:animated];
     
-    //设置导航栏不透明
-    [self setStatusBarAlpha:1.0f];
+    //设置状态栏不透明
+//    [self setStatusBarAlpha:1.0f];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -200,6 +210,59 @@ using namespace cv;
 
 - (void)createUI
 {
+    CGRect rect = self.view.bounds;
+    
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, rect.size.width, TOPVIEW_HEIGHT)];
+    topView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:topView];
+    
+    UILabel *clarityLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, STATUSBAT_HEIGHT+15.0f, 50.0f, 20.0f)];
+    clarityLabel.text = @"清晰度";
+    clarityLabel.textColor = COLOR_WITH_HEX(0X3C70FF);
+    clarityLabel.font = [UIFont systemFontOfSize:14.0f];
+    clarityLabel.textAlignment = NSTextAlignmentCenter;
+    [topView addSubview:clarityLabel];
+    
+    UILabel *markLabel = [[UILabel alloc] initWithFrame:CGRectMake((rect.size.width-64.0f-15.0f)/2+15.0f, STATUSBAT_HEIGHT+15.0f, 75.0f, 20.0f)];
+    markLabel.text = @"50（达标）";
+    markLabel.textColor = COLOR_WITH_HEX(0X222222);
+    markLabel.font = [UIFont systemFontOfSize:14.0f];
+    markLabel.textAlignment = NSTextAlignmentCenter;
+    [topView addSubview:markLabel];
+    
+    self.progressView = [[ProgressView alloc] initWithFrame:CGRectMake(15.0f, STATUSBAT_HEIGHT+45.0f, rect.size.width-15.0f-64.0f, 12.0f)];
+    self.progressView.trackTintColor = COLOR_WITH_HEX(0X4C65FD);
+    [topView addSubview:self.progressView];
+    
+    self.clarityValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(rect.size.width-15.0f-32.0f, STATUSBAT_HEIGHT+41.0f, 32.0f, 20.0f)];
+    self.clarityValueLabel.text = @"";
+    self.clarityValueLabel.textColor = COLOR_WITH_HEX(0X222222);
+    self.clarityValueLabel.font = [UIFont systemFontOfSize:14.0f];
+    self.clarityValueLabel.textAlignment = NSTextAlignmentCenter;
+    [topView addSubview:self.clarityValueLabel];
+    
+    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, rect.size.height-BOTTOMVIEW_HEIGHT, rect.size.width, BOTTOMVIEW_HEIGHT)];
+    bottomView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:bottomView];
+    
+    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backBtn setFrame:CGRectMake(30, 34, 32, 32)];
+    [backBtn setImage:[UIImage imageNamed:@"返回"] forState:UIControlStateNormal];
+    [backBtn addTarget:self action:@selector(closeCamera:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomView addSubview:backBtn];
+    
+    UIButton *shootBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [shootBtn setFrame:CGRectMake((rect.size.width-64)/2, 18, 64, 64)];
+    [shootBtn setImage:[UIImage imageNamed:@"拍照"] forState:UIControlStateNormal];
+    [shootBtn addTarget:self action:@selector(shoot:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomView addSubview:shootBtn];
+    
+    UIButton *flashBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [flashBtn setFrame:CGRectMake(rect.size.width - 32 - 30, 34, 32, 32)];
+    [flashBtn setImage:[UIImage imageNamed:@"闪光灯"] forState:UIControlStateNormal];
+    [flashBtn addTarget:self action:@selector(flashOnOrOff:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomView addSubview:flashBtn];
+    
     self.focusView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 80, 80)];
     self.focusView.layer.borderWidth = 1.0;
     self.focusView.layer.borderColor = [UIColor greenColor].CGColor;
@@ -210,43 +273,6 @@ using namespace cv;
     //添加对焦手势
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focusGesture:)];
     [self.view addGestureRecognizer:tapGesture];
-    
-    //返回
-    UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [leftButton setTitle:@"返回" forState:UIControlStateNormal];
-    leftButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [leftButton sizeToFit];
-    leftButton.center = CGPointMake((KScreenWidth - 60)/2.0/2.0, KScreenHeight-70);
-    [leftButton addTarget:self action:@selector(closeCamera) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:leftButton];
-    
-    //拍照
-    self.photoButton = [UIButton new];
-    self.photoButton.frame = CGRectMake(KScreenWidth/2.0-30, KScreenHeight-100, 60, 60);
-    [self.photoButton setImage:[UIImage imageNamed:@"shoot"] forState:UIControlStateNormal];
-    [self.photoButton addTarget:self action:@selector(shoot) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.photoButton];
-    
-    //闪光灯
-    self.flashButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.flashButton setTitle:@"闪光灯关" forState:UIControlStateNormal];
-    self.flashButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.flashButton sizeToFit];
-    self.flashButton.center = CGPointMake(KScreenWidth - (KScreenWidth - 60)/2.0/2.0, KScreenHeight-70);
-    [self.flashButton addTarget:self action:@selector(flashOnOrOff) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview: self.flashButton];
-    
-    //清晰度
-    UIView *clarityView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, KScreenWidth, 50.0f)];
-    clarityView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:clarityView];
-    
-    //进度条
-    self.progressView = [[ProgressView alloc] initWithFrame:CGRectMake(10, 15, KScreenWidth-20, 20)];
-//    self.progressView.progressTintColor = [UIColor redColor];
-//    self.progressView.trackTintColor = [UIColor cyanColor];
-//    self.progressView.transform = CGAffineTransformMakeScale(1.0, 5.0);
-    [clarityView addSubview:self.progressView];
 }
 
 - (NSInteger)getRandomNumber:(NSInteger)from to:(NSInteger)to
@@ -302,26 +328,40 @@ using namespace cv;
 }
 
 #pragma mark - 关闭相机
-- (void)closeCamera
+- (void)closeCamera:(UIButton *)button
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark- 拍照
-- (void)shoot
+- (void)shoot:(UIButton *)button
 {
     //保存照片到相册
 //    [self loadImageFinished:self.image];
     
-    UIImage *image = [self fixImageOrientation:self.image];
+    UIImage *image = [ImageUtil fixImageOrientation:self.image];
+    
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    CGRect cropRect = rect;
+    CGFloat widthRatio = image.size.width/rect.size.width;
+    CGFloat heightRatio = image.size.height/rect.size.height;
+    
+    cropRect.origin.y = TOPVIEW_HEIGHT*heightRatio;
+    cropRect.size.width = rect.size.width * widthRatio;
+    cropRect.size.height = (rect.size.height-TOPVIEW_HEIGHT-BOTTOMVIEW_HEIGHT) *heightRatio;
+    
+    //截取部分图片并生成新图片
+    CGImageRef sourceImageRef = [image CGImage];
+    CGImageRef newImageRef = CGImageCreateWithImageInRect(sourceImageRef, cropRect);
+    UIImage *newImage = [UIImage imageWithCGImage:newImageRef scale:1 orientation:UIImageOrientationUp];
     
     //跳转到照片预览裁剪页面
-    EditImageViewController *vc = [[EditImageViewController alloc] initWithImage:image];
+    EditImageViewController *vc = [[EditImageViewController alloc] initWithImage:newImage];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - 闪光灯开关
-- (void)flashOnOrOff
+- (void)flashOnOrOff:(UIButton *)button
 {
     if([self.device lockForConfiguration:nil])
     {
@@ -382,7 +422,7 @@ using namespace cv;
     
     if(buttonIndex == 1 && alertView.tag == 100)
     {
-        [self closeCamera];
+        [self closeCamera:nil];
     }
 }
 
@@ -394,12 +434,16 @@ using namespace cv;
         
         self.image = [self getImageBySampleBufferref:sampleBuffer];
         
-        CGFloat value = [self clarityOfImageWithVariance:self.image];
+        float value = [ImageUtil clarityOfImageWithVariance:self.image];
         
         NSLog(@"\n---------------------\n清晰度 = %f\n---------------------\n\n\n", value);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.progressView.progressValue = value/100*(KScreenWidth-20);
+            
+            self.progressView.progressValue = value/100*(self.progressView.bounds.size.width);
+            
+            NSString *valueString = [NSString stringWithFormat:@"%d%@", (int)value, @"%"];
+            self.clarityValueLabel.text = valueString;
         });
     }
 }
@@ -463,130 +507,6 @@ using namespace cv;
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     NSLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
-}
-
-//方差算法计算图片清晰度
-- (CGFloat)clarityOfImageWithVariance:(UIImage *)image
-{
-    Mat imageGrey;
-    CGFloat varianceValue = 0.0;
-    
-    Mat imageSource;
-    UIImageToMat(image, imageSource);
-    cvtColor(imageSource, imageGrey, CV_RGB2GRAY);
-    
-    // -------------------方差方法-------------------
-    Mat meanValueImage;
-    Mat meanStdValueImage;
-    
-    //求灰度图像的标准差
-    meanStdDev(imageGrey, meanValueImage, meanStdValueImage);
-    varianceValue = meanStdValueImage.at<double>(0, 0);
-    // -------------------方差方法-------------------
-    
-    return varianceValue;
-}
-
-//梯度算法计算图片清晰度
-- (double)clarityOfImageWithGradient:(UIImage *)image
-{
-    Mat imageGrey;
-    double gradientValue = 0.0;
-    
-    Mat imageSource;
-    UIImageToMat(image, imageSource);
-    cvtColor(imageSource, imageGrey, CV_RGB2GRAY);
-    
-    // -------------------梯度方法-------------------
-    Mat imageSobel;
-    //Laplacian(imageGrey, imageSobel, CV_16U); // Laplacian梯度方法
-    
-    Sobel(imageGrey, imageSobel, CV_16U, 1, 1); // Tenengrad梯度方法
-    
-    //图像的平均灰度
-    gradientValue = mean(imageSobel)[0];
-    // -------------------梯度方法-------------------
-    
-    return gradientValue;
-}
-
-// 修正图片方向
-- (UIImage *)fixImageOrientation:(UIImage *)image
-{
-    // No-op if the orientation is already correct
-    if(image.imageOrientation == UIImageOrientationUp)
-    {
-        return image;
-    }
-    
-    // We need to calculate the proper transformation to make the image upright.
-    // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
-    CGAffineTransform transform = CGAffineTransformIdentity;
-    
-    switch(image.imageOrientation)
-    {
-        case UIImageOrientationDown:
-        case UIImageOrientationDownMirrored:
-            transform = CGAffineTransformTranslate(transform, image.size.width, image.size.height);
-            transform = CGAffineTransformRotate(transform, M_PI);
-            break;
-            
-        case UIImageOrientationLeft:
-        case UIImageOrientationLeftMirrored:
-            transform = CGAffineTransformTranslate(transform, image.size.width, 0);
-            transform = CGAffineTransformRotate(transform, M_PI_2);
-            break;
-            
-        case UIImageOrientationRight:
-        case UIImageOrientationRightMirrored:
-            transform = CGAffineTransformTranslate(transform, 0, image.size.height);
-            transform = CGAffineTransformRotate(transform, -M_PI_2);
-            break;
-        default:
-            break;
-    }
-    
-    switch(image.imageOrientation)
-    {
-        case UIImageOrientationUpMirrored:
-        case UIImageOrientationDownMirrored:
-            transform = CGAffineTransformTranslate(transform, image.size.width, 0);
-            transform = CGAffineTransformScale(transform, -1, 1);
-            break;
-        case UIImageOrientationLeftMirrored:
-        case UIImageOrientationRightMirrored:
-            transform = CGAffineTransformTranslate(transform, image.size.height, 0);
-            transform = CGAffineTransformScale(transform, -1, 1);
-            break;
-        default:
-            break;
-    }
-    
-    // Now we draw the underlying CGImage into a new context, applying the transform
-    // calculated above.
-    CGContextRef ctx = CGBitmapContextCreate(NULL, image.size.width, image.size.height, CGImageGetBitsPerComponent(image.CGImage), 0, CGImageGetColorSpace(image.CGImage), CGImageGetBitmapInfo(image.CGImage));
-    CGContextConcatCTM(ctx, transform);
-    
-    switch(image.imageOrientation)
-    {
-        case UIImageOrientationLeft:
-        case UIImageOrientationLeftMirrored:
-        case UIImageOrientationRight:
-        case UIImageOrientationRightMirrored:
-            // Grr...
-            CGContextDrawImage(ctx, CGRectMake(0,0,image.size.height,image.size.width), image.CGImage);
-            break;
-        default:
-            CGContextDrawImage(ctx, CGRectMake(0,0,image.size.width,image.size.height), image.CGImage);
-            break;
-    }
-    
-    // And now we just create a new UIImage from the drawing context
-    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
-    UIImage *img = [UIImage imageWithCGImage:cgimg];
-    CGContextRelease(ctx);
-    CGImageRelease(cgimg);
-    return img;
 }
 
 /*
