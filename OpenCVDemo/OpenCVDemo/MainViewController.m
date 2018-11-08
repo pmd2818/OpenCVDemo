@@ -2,7 +2,7 @@
 //  MainViewController.m
 //  OpenCVDemo
 //
-//  Created by Meide Pan on 2018/11/2.
+//  Created by boljonggo on 2018/11/2.
 //  Copyright © 2018 boljonggo. All rights reserved.
 //
 

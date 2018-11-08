@@ -108,9 +108,11 @@
     
     double durationValue = (_progressValue/2.0) / maxValue + .5;
     
+    __weak typeof(self) weakSelf = self;
+    
     [UIView animateWithDuration:durationValue animations:^{
         
-        self.progressView.frame = _rect_progressView;
+        weakSelf.progressView.frame = weakSelf.rect_progressView;
     }];
 }
 
