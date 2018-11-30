@@ -10,28 +10,13 @@
 
 #import "EditImageView.h"
 #import "ProgressView.h"
-
-#define COLOR_WITH_HEX(hexValue) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16)) / 255.0 green:((float)((hexValue & 0xFF00) >> 8)) / 255.0 blue:((float)(hexValue & 0xFF)) / 255.0 alpha:1.0f]
-
-#define HORIZONTAL_FIT(x)  ((CGFloat)(x) / 375.0f * ([[UIScreen mainScreen] bounds].size.width)) //水平方向相对值
-#define VERTICAL_FIT(y) ((CGFloat)(y) / 375.0f * ([[UIScreen mainScreen] bounds].size.width)) //竖直方向相对值
-
-#define STATUSBAT_HEIGHT [[UIApplication sharedApplication] statusBarFrame].size.height
-#define TOPVIEW_HEIGHT ((STATUSBAT_HEIGHT) + 72.0f)
-#define BOTTOMVIEW_HEIGHT 100.0f
-#define IMAGEVIEW_WIDTH ([[UIScreen mainScreen] bounds].size.width)
-
-#define ANCHOR_SIZE 20.0f
-#define ANCHOR_BORDER_WIDTH 0.5f
-#define ANCHOR_ALPHA 0.7f
-#define ANCHOR_BORDER_COLOR (0X3C70FF)
-
-#define MARGIN_LEFT 30.0f
-#define MARGIN_RIGHT 30.0f
-#define MARGIN_TOP 34.0f
-#define BUTTON_SIZE_WIDTH 32.0f
+#import "MagnifyGlassView.h"
 
 @interface EditImageView ()
+{
+    MagnifyGlassView *magGlassView;
+    UIView *view;
+}
 
 //进度条
 @property (nonatomic, strong) ProgressView *progressView;
@@ -86,53 +71,138 @@
     return self;
 }
 
-//拖拽手势
+// 限制拖动范围
+- (CGPoint)convertPoint:(CGPoint)point withRect:(CGRect)rect
+{
+    if(point.x < rect.origin.x)
+    {
+        point.x = rect.origin.x;
+    }
+    else if(point.x > rect.size.width)
+    {
+        point.x = rect.size.width;
+    }
+    
+    if(point.y < rect.origin.y)
+    {
+        point.y = rect.origin.y;
+    }
+    else if(point.y > rect.size.height)
+    {
+        point.y = rect.size.height;
+    }
+    
+    return point;
+}
+
+// 获取距离拖拽点最近的角点
+- (UIView *)closetToPoint:(CGPoint)point withViews:(NSArray<UIView *> *)array
+{
+    UIView *cornerView = nil;
+    CGFloat distance = -0.1f;
+    
+    for(UIView *view in array)
+    {
+        CGFloat dis = sqrt(pow((view.center.x - point.x), 2) + pow((view.center.y - point.y), 2));
+        
+        if(distance < 0)
+        {
+            distance = dis;
+        }
+        
+        if(dis <= distance)
+        {
+            distance = dis;
+            cornerView = view;
+        }
+    }
+    
+    return cornerView;
+}
+
+// 拖拽手势
 - (void)pan:(UIPanGestureRecognizer *)recognizer
 {
-    NSLog(@"拖动的view=%ld", [recognizer view].tag);
+    CGFloat x, y;
+    CGPoint point = CGPointZero;
+    CGRect rect = self.originImageView.bounds;
     
     //获取手指按在图片上的位置  以图片左上角为原点
     CGPoint translation = [recognizer translationInView:self.originImageView];
-
-    CGFloat x, y;
-
-    switch(recognizer.view.tag)
-    {
-        case 10001:
+    
+    NSArray <UIView *> *viewArray = [NSArray arrayWithObjects:self.ltCircle, self.rtCircle, self.rbCircle, self.lbCircle, nil];
+    
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan:
         {
-            x = self.ltPoint.x + translation.x;
-            y = self.ltPoint.y + translation.y;
-            self.ltPoint = CGPointMake(x, y);
+            NSLog(@"recognizer.state=开始拖动");
+            
+            CGPoint location = [recognizer locationInView:self.originImageView];
+            view = [self closetToPoint:location withViews:viewArray];
+            
+            x = view.center.x + translation.x;
+            y = view.center.y + translation.y;
+            point = CGPointMake(x, y);
+            
+            if(!magGlassView)
+            {
+                magGlassView = [[MagnifyGlassView alloc] init];
+                magGlassView.magnifyView = self;
+                [self.superview addSubview:magGlassView];
+            }
+            magGlassView.touchPoint = point;
+            
             break;
         }
-        case 10002:
+        case UIGestureRecognizerStateChanged:
         {
-            x = self.rtPoint.x + translation.x;
-            y = self.rtPoint.y + translation.y;
-            self.rtPoint = CGPointMake(x, y);
+            x = view.center.x + translation.x;
+            y = view.center.y + translation.y;
+            point = CGPointMake(x, y);
+            switch(view.tag)
+            {
+                case 10001:
+                    point = [self convertPoint:point withRect:rect];
+                    self.ltPoint = point;
+                    break;
+                case 10002:
+                    point = [self convertPoint:point withRect:rect];
+                    self.rtPoint = point;
+                    break;
+                case 10003:
+                    point = [self convertPoint:point withRect:rect];
+                    self.rbPoint = point;
+                    break;
+                case 10004:
+                    point = [self convertPoint:point withRect:rect];
+                    self.lbPoint = point;
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            NSLog(@"recognizer.state=拖动中");
+            point.x += self.originImageView.frame.origin.x;
+            magGlassView.touchPoint = point;//将本身的touch信息传递给放大镜,设置放大镜的中心点
+            [magGlassView setNeedsDisplay];
+            
             break;
         }
-        case 10003:
+        case UIGestureRecognizerStateEnded:
         {
-            x = self.rbPoint.x + translation.x;
-            y = self.rbPoint.y + translation.y;
-            self.rbPoint = CGPointMake(x, y);
+            NSLog(@"recognizer.state=结束拖动");
+            [magGlassView removeFromSuperview];
+            magGlassView = nil;
+            
             break;
         }
-        case 10004:
-        {
-            x = self.lbPoint.x + translation.x;
-            y = self.lbPoint.y + translation.y;
-            self.lbPoint = CGPointMake(x, y);
-            break;
-        }
-
         default:
             break;
     }
-
+    
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.originImageView];
-
+    
     [self setNeedsDisplay];
 }
 
@@ -200,7 +270,9 @@
     
     //原图
     rect = self.bounds;
+    rect.origin.x = MARGIN_IMAGE;
     rect.origin.y = topView.frame.size.height;
+    rect.size.width = rect.size.width - 2 * MARGIN_IMAGE;
     rect.size.height = rect.size.height - topView.frame.size.height - bottomView.frame.size.height;
     self.originImageView = [[UIImageView alloc] initWithFrame:rect];
     self.originImageView.image = self.image;
@@ -208,6 +280,9 @@
     self.originImageView.userInteractionEnabled = YES;
     self.originImageView.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:self.originImageView];
+    
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    [self.originImageView addGestureRecognizer:panGesture];
     
     //预览图片
     self.previewImageView = [[UIImageView alloc] initWithFrame:rect];
@@ -388,7 +463,7 @@
     [linePath addLineToPoint:self.lbPoint];
     [linePath closePath];
     //5.开始绘制
-    [linePath stroke];
+//    [linePath stroke];
     self.shapeLayer.path = linePath.CGPath;
     
     self.ltCircle.center = self.ltPoint;

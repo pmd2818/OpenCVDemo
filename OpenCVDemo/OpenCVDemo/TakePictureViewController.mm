@@ -22,15 +22,6 @@
 using namespace std;
 using namespace cv;
 
-#define KScreenWidth  [UIScreen mainScreen].bounds.size.width
-#define KScreenHeight  [UIScreen mainScreen].bounds.size.height
-
-#define COLOR_WITH_HEX(hexValue) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16)) / 255.0 green:((float)((hexValue & 0xFF00) >> 8)) / 255.0 blue:((float)(hexValue & 0xFF)) / 255.0 alpha:1.0f]
-
-#define STATUSBAT_HEIGHT [[UIApplication sharedApplication] statusBarFrame].size.height
-#define TOPVIEW_HEIGHT ((STATUSBAT_HEIGHT) + 72.0f)
-#define BOTTOMVIEW_HEIGHT 100.0f
-
 /**
  * 抓取视频帧数据流拍照片
  */
@@ -346,9 +337,10 @@ using namespace cv;
     CGFloat widthRatio = image.size.width/rect.size.width;
     CGFloat heightRatio = image.size.height/rect.size.height;
     
+    cropRect.origin.x = MARGIN_IMAGE * widthRatio;
     cropRect.origin.y = TOPVIEW_HEIGHT*heightRatio;
-    cropRect.size.width = rect.size.width * widthRatio;
-    cropRect.size.height = (rect.size.height-TOPVIEW_HEIGHT-BOTTOMVIEW_HEIGHT) *heightRatio;
+    cropRect.size.width = (rect.size.width-2*MARGIN_IMAGE) * widthRatio;
+    cropRect.size.height = (rect.size.height-TOPVIEW_HEIGHT-BOTTOMVIEW_HEIGHT) * heightRatio;
     
     //截取部分图片并生成新图片
     CGImageRef sourceImageRef = [image CGImage];

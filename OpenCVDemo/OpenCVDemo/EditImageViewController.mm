@@ -77,23 +77,6 @@ using namespace cv;
     };
 }
 
-- (void)clickGoBackBtn:(UIButton *)button
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)clickRotateBtn:(UIButton *)button
-{
-    [self detect:self.image];
-    
-    [self.editImageView setNeedsDisplay];
-}
-
-- (void)clickFinishBtn:(UIButton *)button
-{
-    self.editImageView.block([self.editImageView getCornersPoints]);
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -116,11 +99,14 @@ using namespace cv;
     }
 }
 
+//将检测出的顶点转换成屏幕坐标系
 - (NSArray *)pointsToNative:(vector<cv::Point>)points withImage:(UIImage *)image
 {
     CGPoint lt, rt, rb, lb;
+    CGRect rect = self.editImageView.originImageView.frame;
     if(points.size() == 4)
     {
+        // 检测出顶点数=4的时候，表示检测出四边形
         lt = CGPointMake(points[0].x, points[0].y);
         rt = CGPointMake(points[1].x, points[1].y);
         rb = CGPointMake(points[2].x, points[2].y);
@@ -128,10 +114,14 @@ using namespace cv;
     }
     else
     {
-        return nil;
+        // 检测出的顶点数≠4的时候，表示检测出非四边形，此时根据图片大小固定给出截图区域
+        lt = CGPointMake(image.size.width/4.0f, image.size.height/8.0f);
+        rt = CGPointMake(image.size.width-lt.x, lt.y);
+        rb = CGPointMake(image.size.width-lt.x, image.size.height-lt.y);
+        lb = CGPointMake(lt.x, image.size.height-lt.y);
     }
     
-    CGRect rect = [[UIScreen mainScreen] bounds];
+    rect = self.editImageView.originImageView.bounds;
     CGFloat imageRatio = image.size.width / image.size.height;
     CGFloat screenRatio = rect.size.width / rect.size.height;
     
@@ -209,7 +199,7 @@ using namespace cv;
     cv::Point rightBottom = points[2];
     cv::Point leftBottom = points[3];
     
-    CGRect rect = [[UIScreen mainScreen] bounds];
+    CGRect rect = self.editImageView.originImageView.bounds;
     CGFloat imageRatio = image.size.width / image.size.height;
     CGFloat screenRatio = rect.size.width / rect.size.height;
     
@@ -263,6 +253,24 @@ using namespace cv;
     srcBitmapMat.release();
     
     return dstBitmapMat;
+}
+
+#pragma mark - EditImageViewDelegate
+- (void)clickGoBackBtn:(UIButton *)button
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)clickRotateBtn:(UIButton *)button
+{
+    [self detect:self.image];
+    
+    [self.editImageView setNeedsDisplay];
+}
+
+- (void)clickFinishBtn:(UIButton *)button
+{
+    self.editImageView.block([self.editImageView getCornersPoints]);
 }
 
 /*

@@ -20,6 +20,7 @@
 		8DC835AF2175F3060009423F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DC835AE2175F3060009423F /* Assets.xcassets */; };
 		8DC835B22175F3060009423F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DC835B02175F3060009423F /* LaunchScreen.storyboard */; };
 		8DC835B52175F3060009423F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC835B42175F3060009423F /* main.m */; };
+		8DD7B3E821AD55D300E94A8B /* MagnifyGlassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7B3E721AD55D300E94A8B /* MagnifyGlassView.m */; };
 		8DEBFBA0218A87DB00401A6F /* Scanner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBFB9E218A87DB00401A6F /* Scanner.cpp */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		00CB935AEEBB15CA89C845FF /* Pods-OpenCVDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenCVDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenCVDemo/Pods-OpenCVDemo.release.xcconfig"; sourceTree = "<group>"; };
+		8D0B3E4C21AE6E020012AE5D /* Const.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Const.h; sourceTree = "<group>"; };
 		8D13D3A5217EB54A00566E77 /* TakePictureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TakePictureViewController.h; sourceTree = "<group>"; };
 		8D13D3A6217EB54A00566E77 /* TakePictureViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TakePictureViewController.mm; sourceTree = "<group>"; };
 		8D13D3A8217EF4D300566E77 /* ProgressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgressView.h; sourceTree = "<group>"; };
@@ -66,6 +68,8 @@
 		8DC835B42175F3060009423F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8DC835BA2175F3060009423F /* OpenCVDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenCVDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DC835C52175F3060009423F /* OpenCVDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenCVDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DD7B3E621AD55D300E94A8B /* MagnifyGlassView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MagnifyGlassView.h; sourceTree = "<group>"; };
+		8DD7B3E721AD55D300E94A8B /* MagnifyGlassView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MagnifyGlassView.m; sourceTree = "<group>"; };
 		8DEBFB9E218A87DB00401A6F /* Scanner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scanner.cpp; sourceTree = "<group>"; };
 		8DEBFB9F218A87DB00401A6F /* Scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
 		8DF476BB21786874003A54A7 /* OpenCVDemo.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVDemo.pch; sourceTree = "<group>"; };
@@ -140,12 +144,15 @@
 				8D5888DB2194319700F5DF3A /* ImageUtil.mm */,
 				8DC1B2112190490400252FA3 /* EditImageView.h */,
 				8DC1B2122190490400252FA3 /* EditImageView.mm */,
+				8DD7B3E621AD55D300E94A8B /* MagnifyGlassView.h */,
+				8DD7B3E721AD55D300E94A8B /* MagnifyGlassView.m */,
 				8D13D3A5217EB54A00566E77 /* TakePictureViewController.h */,
 				8D13D3A6217EB54A00566E77 /* TakePictureViewController.mm */,
 				8D742051217D9B4C00AA6691 /* TakePhotoViewController.h */,
 				8D742052217D9B4C00AA6691 /* TakePhotoViewController.m */,
 				8D13D3A8217EF4D300566E77 /* ProgressView.h */,
 				8D13D3A9217EF4D300566E77 /* ProgressView.m */,
+				8D0B3E4C21AE6E020012AE5D /* Const.h */,
 				8DF476BB21786874003A54A7 /* OpenCVDemo.pch */,
 				8DC835AE2175F3060009423F /* Assets.xcassets */,
 				8DC835B32175F3060009423F /* Info.plist */,
@@ -349,6 +356,7 @@
 				8D13D3AA217EF4D300566E77 /* ProgressView.m in Sources */,
 				8DC1B210218FDEEB00252FA3 /* EditImageViewController.mm in Sources */,
 				8DC835B52175F3060009423F /* main.m in Sources */,
+				8DD7B3E821AD55D300E94A8B /* MagnifyGlassView.m in Sources */,
 				8DEBFBA0218A87DB00401A6F /* Scanner.cpp in Sources */,
 				8D1F5FC8218C3AAD004D2E3B /* MainViewController.m in Sources */,
 				8DC835A72175F3050009423F /* AppDelegate.m in Sources */,
